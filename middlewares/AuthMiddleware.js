@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
-const { default: mongoose } = require("mongoose");
 const getLogger = require("../utils/logger");
 const StatusCodeEnums = require("../enums/StatusCodeEnum");
+const { validMongooseObjectId } = require("../utils/validator");
 const logger = getLogger("AUTH_MIDDLEWARE");
 
 const AuthMiddleware = async (req, res, next) => {
@@ -29,11 +29,7 @@ const AuthMiddleware = async (req, res, next) => {
       });
     }
 
-    if (!mongoose.Types.ObjectId.isValid(_id)) {
-      return res
-        .status(StatusCodeEnums.Unauthorized_401)
-        .json({ message: "Invalid token" });
-    }
+    await validMongooseObjectId(_id);
     req.userId = _id;
     next();
   } catch (error) {
