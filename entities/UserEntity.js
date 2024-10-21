@@ -123,7 +123,7 @@ const userEntitySchema = new mongoose.Schema({
       type: Date,
     },
     duration: {
-      type: Number,
+      type: String,
     },
     time: {
       type: Number,
